@@ -32,10 +32,9 @@
 
 ### 26.4 보안 고도화
 
-- 2FA
-- WebAuthn
 - Tailscale user identity 연동
-- IP allowlist
+- Tailscale ACL 예시 문서화
+- 공개 인터넷 배포 모드가 필요해질 경우 앱 자체 인증 재검토
 - audit log
 
 ---
@@ -44,13 +43,12 @@
 
 Lapidary MVP는 다음 문장으로 정의한다.
 
-**Tailscale로 접근 가능한 로컬 웹앱에서 로그인 후 Obsidian vault의 Markdown 파일을 탐색, 열람, 편집, 생성, 삭제, 이동, 검색할 수 있는 개인용 문서 관리 서버.**
+**Tailscale로 접근 가능한 로컬 웹앱에서 Obsidian vault의 Markdown 파일을 탐색, 열람, 편집, 생성, 삭제, 이동, 검색할 수 있는 개인용 문서 관리 서버.**
 
 MVP 완료 기준:
 
 - 로컬 PC에서 서버 실행 가능
 - Tailscale 주소로 접속 가능
-- 로그인 가능
 - vault path 설정 가능
 - 파일 트리 탐색 가능
 - Markdown 문서 열람 가능
@@ -70,10 +68,10 @@ MVP 완료 기준:
 
 1. path safety 유틸
 2. vault file service
-3. 인증
-4. 파일 트리
-5. 문서 읽기
-6. 문서 저장
+3. 파일 트리
+4. 문서 읽기
+5. 문서 저장
+6. 검색 인덱스
 
 이 순서가 중요한 이유는 Lapidary의 핵심 리스크가 UI가 아니라 **로컬 파일을 안전하게 조작하는 것**이기 때문이다. 파일 접근 계층을 먼저 안전하게 만들고, 그 위에 UI와 검색을 얹는 방식이 가장 안정적이다.
 
@@ -116,7 +114,6 @@ focused
 
 Lapidary는 Obsidian vault를 외부에서 안전하게 다루기 위한 개인용 웹 인터페이스다. 핵심은 화려한 기능보다 안전한 파일 접근, 빠른 문서 열람, 신뢰할 수 있는 저장, 모바일 접근성이다.
 
-기술적으로는 Next.js, TypeScript, SQLite, Drizzle, Better Auth, CodeMirror, Tailscale Serve 조합을 사용한다. 문서 원본은 항상 로컬 vault의 `.md` 파일이며, DB는 인증, 설정, 검색 인덱스, 최근 문서 같은 보조 데이터만 저장한다.
+기술적으로는 Next.js, TypeScript, SQLite, Drizzle, CodeMirror, Tailscale Serve 조합을 사용한다. 문서 원본은 항상 로컬 vault의 `.md` 파일이며, DB는 설정, 검색 인덱스, 최근 문서 같은 보조 데이터만 저장한다.
 
-MVP는 인증, vault 탐색, 문서 읽기/쓰기, 생성/삭제/이동, 검색까지 포함한다. 이후 Obsidian 친화 기능, 백링크, 태그, Git 연동, AI 기능으로 확장할 수 있다.
-
+MVP는 Tailscale 접근, vault 탐색, 문서 읽기/쓰기, 생성/삭제/이동, 검색까지 포함한다. 이후 Obsidian 친화 기능, 백링크, 태그, Git 연동, AI 기능으로 확장할 수 있다.

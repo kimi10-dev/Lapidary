@@ -7,7 +7,7 @@ Lapidary 기획문서를 읽기 쉬운 단위로 분리한 문서 모음입니�
 - [01. 제품 개요](./01-product-overview.md): 제품 정의, 문제, 사용자, 목표, 원칙, 주요 시나리오
 - [02. MVP와 UX](./02-mvp-and-ux.md): MVP 범위, 정보 구조, 화면과 UX 상세
 - [03. 기술 구조와 데이터](./03-tech-architecture-data.md): 기술 스택, 시스템 아키텍처, 데이터 모델
-- [04. API 설계](./04-api-design.md): 공통 API 규칙, 인증, 설정, 파일, 폴더, 검색, 인덱스 API
+- [04. API 설계](./04-api-design.md): 공통 API 규칙, 설정, 파일, 폴더, 검색, 인덱스 API
 - [05. 파일/Markdown/검색/성능](./05-files-markdown-search-performance.md): 파일 시스템 정책, Obsidian 호환성, 검색 설계, 성능 요구사항
 - [06. 상태/에러/실행](./06-state-errors-operations.md): 상태 관리, 에러 처리, 로컬 실행과 배포
 - [07. 로드맵/테스트/AI/리스크](./07-roadmap-tests-ai-risks.md): 개발 단계, 테스트 계획, AI 개발 가이드, 리스크 대응

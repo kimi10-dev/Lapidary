@@ -9,7 +9,6 @@ UI: Tailwind CSS + shadcn/ui
 Icons: lucide-react
 Editor: CodeMirror
 Markdown: markdown-it 또는 unified/remark
-Auth: Better Auth
 DB: SQLite
 ORM: Drizzle
 SQLite Driver: better-sqlite3
@@ -36,10 +35,6 @@ AI 기반 개발에 유리하다. 예제와 레퍼런스가 많고, React 생태
 
 TypeScript 친화적인 ORM이다. SQLite와 잘 맞고 schema 관리가 명확하다.
 
-#### Better Auth
-
-Next.js와 DB 기반 인증을 구성하기 좋다. email/password 로그인과 세션 관리를 구현할 수 있다.
-
 #### CodeMirror
 
 Markdown 편집기에 적합하다. 가볍고 확장성이 좋다.
@@ -62,7 +57,6 @@ Tailscale Serve
 Next.js Server
     ├─ App UI
     ├─ API Routes
-    ├─ Auth Layer
     ├─ Vault File Service
     ├─ Search Service
     ├─ Indexer Worker
@@ -83,7 +77,7 @@ Obsidian Vault on Local File System
 
 #### API Routes
 
-- 인증된 요청만 처리
+- tailnet 내부 요청을 전제로 처리
 - 파일 작업 요청 수신
 - 입력값 검증
 - 서버 서비스 호출
@@ -119,28 +113,20 @@ Obsidian Vault on Local File System
 - 본문 인덱싱
 - 파일 변경 감지 시 인덱스 업데이트
 
-#### Auth Layer
-
-역할:
-
-- 로그인 처리
-- 세션 검증
-- 보호된 API 차단
-
 ---
 
 ## 12. 보안 설계
 
 ### 12.1 보안 모델
 
-Lapidary의 보안은 두 층으로 구성한다.
+Lapidary의 접근 제어는 Tailscale 네트워크를 신뢰 경계로 둔다.
 
 ```txt
-1차 방어선: Tailscale 네트워크 접근 제한
-2차 방어선: Lapidary 자체 로그인 인증
+접근 제어: Tailscale tailnet 멤버십과 ACL
+앱 내부 보안: vault root 경로 제한과 파일 작업 검증
 ```
 
-Tailscale이 있어도 앱 인증은 필수로 둔다.
+MVP에서는 앱 자체 로그인, 세션, 사용자 계정 관리를 구현하지 않는다. 공개 인터넷 배포는 지원하지 않고, tailnet 밖에 직접 노출하지 않는 것을 운영 전제로 둔다.
 
 ### 12.2 파일 경로 보안
 
@@ -197,7 +183,6 @@ MVP에서는 symlink를 따라가지 않는다.
 
 - 원래 경로
 - 삭제 시간
-- 삭제한 사용자
 - 복원 가능 여부
 
 ### 12.5 저장 정책
@@ -238,33 +223,16 @@ MVP에서는 다음 두 개만 제공해도 된다.
 - 다시 불러오기
 - 다른 파일로 저장
 
-### 12.7 인증 정책
+### 12.7 API 보호
 
-MVP 인증:
+모든 `/api/*` 라우트는 앱 자체 인증 대신 다음 원칙으로 보호한다.
 
-- email/password 또는 username/password
-- 세션 쿠키
-- HttpOnly cookie
-- Secure cookie
-- SameSite=Lax 또는 Strict
-- 비밀번호 해시 저장
+- 서버는 기본적으로 `127.0.0.1`에 바인딩한다.
+- tailnet HTTPS 노출은 Tailscale Serve가 담당한다.
+- 파일 시스템 작업은 route handler에서 항상 입력값을 검증한다.
+- 공개 인터넷 노출, 리버스 프록시 공개 배포, 다중 사용자 권한 관리는 MVP 범위 밖이다.
 
-관리자 계정:
-
-- 최초 실행 시 생성
-- 또는 CLI에서 생성
-- 초기 설정 완료 후 공개 회원가입 비활성화
-
-### 12.8 API 보호
-
-모든 `/api/*` 라우트는 기본적으로 인증 필요.
-
-예외:
-
-- `/api/auth/*`
-- 최초 setup 확인 API
-
-### 12.9 네트워크 정책
+### 12.8 네트워크 정책
 
 앱 서버는 가능하면 `127.0.0.1`에만 바인딩한다.
 
@@ -285,8 +253,6 @@ SQLite는 문서 원본 저장소가 아니다.
 
 SQLite에 저장할 것:
 
-- 사용자
-- 세션
 - 설정
 - 파일 인덱스
 - 검색 인덱스
@@ -301,21 +267,6 @@ SQLite에 저장하지 않을 것:
 - Obsidian vault 전체 복사본
 
 ### 13.2 테이블 초안
-
-#### users
-
-```txt
-id
-email
-name
-password_hash
-created_at
-updated_at
-```
-
-#### sessions
-
-Better Auth schema를 따른다.
 
 #### settings
 
@@ -388,4 +339,3 @@ restored_at
 ```
 
 ---
-

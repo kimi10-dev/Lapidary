@@ -25,7 +25,6 @@ MVP에서는 과도한 상태관리 라이브러리 없이 시작 가능.
 
 서버에서 관리할 상태:
 
-- 세션
 - 설정
 - 파일 인덱스
 - 검색 인덱스
@@ -38,7 +37,6 @@ MVP에서는 과도한 상태관리 라이브러리 없이 시작 가능.
 ### 20.1 주요 에러 코드
 
 ```txt
-UNAUTHORIZED
 FORBIDDEN
 INVALID_PATH
 PATH_OUTSIDE_VAULT
@@ -74,11 +72,19 @@ INTERNAL_ERROR
 
 ### 21.1 로컬 실행
 
+Lapidary 서버는 필요할 때 사용자가 직접 실행한다. 구현 변경, 문서 수정, 타입체크, 빌드 검증만 필요한 경우에는 개발 서버를 자동으로 시작하지 않는다.
+
 개발:
 
 ```bash
 npm install
 npm run dev
+```
+
+WSL에서 실행한 서버를 Windows 브라우저로 열 때 `ws://127.0.0.1:3000/_next/webpack-hmr` 연결 오류나 `Blocked cross-origin request to Next.js dev resource` 경고가 나면 개발용 HMR WebSocket이 막힌 것이다. `next.config.ts`의 `allowedDevOrigins`에 로컬 개발 origin을 등록하고, 설정 변경 뒤에는 dev 서버를 재시작한다. WSL 브리지 문제가 계속될 때만 WSL 전용 바인딩을 사용한다.
+
+```bash
+npm run dev:wsl
 ```
 
 프로덕션:
@@ -94,8 +100,6 @@ npm start
 LAPIDARY_HOST=127.0.0.1
 LAPIDARY_PORT=3000
 DATABASE_URL=file:./data/lapidary.sqlite
-BETTER_AUTH_SECRET=change-me
-BETTER_AUTH_URL=https://your-device.tailnet-name.ts.net
 LAPIDARY_VAULT_PATH=/path/to/obsidian/vault
 ```
 
@@ -122,4 +126,3 @@ localhost:3000 → Tailscale Serve → tailnet HTTPS URL
 MVP에서는 OS별 자동 실행 문서는 후순위로 두고, 수동 실행부터 지원한다.
 
 ---
-

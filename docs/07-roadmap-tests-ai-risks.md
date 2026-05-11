@@ -9,13 +9,13 @@
 - Tailwind/shadcn/ui 설정
 - 기본 레이아웃 구성
 - SQLite/Drizzle 설정
-- Better Auth 기본 연결
+- Tailscale Serve 로컬 실행 가이드 작성
 
 완료 조건:
 
-- 로그인 페이지 접근 가능
 - DB 생성 가능
-- 보호된 페이지 접근 제어 가능
+- 로컬 서버 실행 가능
+- Tailscale 주소로 앱 접근 가능
 
 ### Phase 1: Vault 읽기
 
@@ -123,7 +123,8 @@
 - 파일 생성 API
 - 파일 삭제 API
 - 파일 이동 API
-- 인증 보호 API
+- setup API
+- 검색 인덱스 재생성 API
 
 ### 23.3 보안 테스트
 
@@ -143,7 +144,6 @@ hidden file access
 
 시나리오:
 
-- 모바일에서 로그인
 - 모바일에서 문서 수정
 - Obsidian에서 수정 후 Lapidary에서 저장 충돌 감지
 - Tailscale 주소로 접근
@@ -170,6 +170,8 @@ AI에게 구현을 맡길 때 프로젝트 규칙을 명확히 전달해야 한�
 - 삭제는 실제 삭제가 아니라 휴지통 이동으로 구현한다.
 - 문서 원본은 SQLite가 아니라 Obsidian vault의 .md 파일이다.
 - DB에는 메타데이터와 인덱스만 저장한다.
+- 앱 자체 로그인은 MVP에서 구현하지 않는다.
+- 접근 제어는 Tailscale tailnet과 ACL을 전제로 한다.
 ```
 
 ### 24.2 AI에게 줄 첫 구현 프롬프트 예시
@@ -189,7 +191,8 @@ Next.js App Router + TypeScript로 개인용 Obsidian vault 웹 관리 앱 Lapid
 - UI는 Tailwind + shadcn/ui
 - 에디터는 CodeMirror
 - DB는 SQLite + Drizzle
-- 인증은 Better Auth
+- 앱 자체 인증은 구현하지 않음
+- 접근은 Tailscale Serve로 tailnet 내부에만 노출
 
 먼저 프로젝트 폴더 구조, 핵심 타입, path safety 유틸, vault file service부터 구현해줘.
 ```
@@ -242,4 +245,3 @@ Next.js App Router + TypeScript로 개인용 Obsidian vault 웹 관리 앱 Lapid
 - 큰 파일 skip 옵션
 
 ---
-

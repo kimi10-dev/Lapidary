@@ -5,7 +5,7 @@
 - 모든 API는 JSON 반환
 - 모든 파일 경로는 vault root 기준 상대경로
 - 절대경로 입력 금지
-- 인증 필요
+- 앱 자체 인증은 두지 않고 Tailscale tailnet 내부 접근을 전제
 - 에러는 일관된 형태로 반환
 
 에러 응답 예시:
@@ -29,15 +29,7 @@
 }
 ```
 
-### 14.2 Auth API
-
-Better Auth 라우트를 사용한다.
-
-```txt
-/api/auth/*
-```
-
-### 14.3 Setup API
+### 14.2 Setup API
 
 #### GET /api/setup/status
 
@@ -50,7 +42,6 @@ Better Auth 라우트를 사용한다.
   "ok": true,
   "data": {
     "isConfigured": true,
-    "hasAdmin": true,
     "vaultPathSet": true
   }
 }
@@ -58,19 +49,17 @@ Better Auth 라우트를 사용한다.
 
 #### POST /api/setup
 
-초기 관리자 계정과 vault path 설정.
+초기 vault path 설정.
 
 요청:
 
 ```json
 {
-  "email": "user@example.com",
-  "password": "password",
   "vaultPath": "/Users/name/Documents/ObsidianVault"
 }
 ```
 
-### 14.4 Tree API
+### 14.3 Tree API
 
 #### GET /api/tree?path=
 
@@ -97,7 +86,7 @@ Better Auth 라우트를 사용한다.
 }
 ```
 
-### 14.5 File API
+### 14.4 File API
 
 #### GET /api/files?path=notes/test.md
 
@@ -180,7 +169,7 @@ Better Auth 라우트를 사용한다.
 }
 ```
 
-### 14.6 Folder API
+### 14.5 Folder API
 
 #### POST /api/folders
 
@@ -194,7 +183,7 @@ Better Auth 라우트를 사용한다.
 }
 ```
 
-### 14.7 Move/Rename API
+### 14.6 Move/Rename API
 
 #### POST /api/move
 
@@ -209,7 +198,7 @@ Better Auth 라우트를 사용한다.
 }
 ```
 
-### 14.8 Search API
+### 14.7 Search API
 
 #### GET /api/search?q=keyword
 
@@ -234,13 +223,10 @@ Better Auth 라우트를 사용한다.
 }
 ```
 
-### 14.9 Index API
+### 14.8 Index API
 
 #### POST /api/index/rebuild
 
 검색 인덱스 재생성.
 
-관리자만 실행 가능.
-
 ---
-

@@ -2,13 +2,12 @@
 
 ### 7.1 MVP 필수 기능
 
-#### 인증
+#### 접근 제어
 
-- 로그인
-- 로그아웃
-- 세션 유지
-- 초기 관리자 계정 생성
-- 비밀번호 기반 인증
+- 앱 자체 로그인은 MVP에서 제외
+- Tailscale tailnet 접근을 전제
+- 서버는 기본적으로 로컬 인터페이스에 바인딩
+- 공개 인터넷 노출은 비지원
 
 #### Vault 설정
 
@@ -72,7 +71,7 @@
 
 #### 보안
 
-- 로그인하지 않은 요청 차단
+- Tailscale 외부 접근 차단은 네트워크 계층에서 처리
 - vault root 밖 접근 차단
 - path traversal 방어
 - symlink 접근 제한
@@ -97,12 +96,11 @@
 
 ### 8.1 주요 화면
 
-1. Login
-2. Initial Setup
-3. Vault Dashboard
-4. Document View/Edit
-5. Search Results
-6. Settings
+1. Initial Setup
+2. Vault Dashboard
+3. Document View/Edit
+4. Search Results
+5. Settings
 
 ### 8.2 화면 구조
 
@@ -110,7 +108,7 @@
 
 ```txt
 +------------------------------------------------------+
-| Top Bar: Lapidary / Search / User menu               |
+| Top Bar: Lapidary / Search / Settings                |
 +----------------------+-------------------------------+
 | Sidebar              | Main Panel                    |
 | - File tree          | - Document editor/preview     |
@@ -204,13 +202,13 @@ MVP에서는 Obsidian의 모든 문법을 완벽히 지원하지 않아도 된�
 검색 결과 예시:
 
 ```txt
-검색어: auth
+검색어: tailscale
 
-1. projects/lapidary/security.md
-   ...Better Auth를 사용하고 session cookie를...
+1. projects/lapidary/network.md
+   ...Tailscale Serve를 통해 tailnet 내부에서만 접근...
 
 2. notes/tailscale.md
-   ...Tailscale Serve 앞단에 auth layer를...
+   ...로컬 서버는 127.0.0.1에 바인딩하고...
 ```
 
 ### 9.5 설정
@@ -224,7 +222,5 @@ MVP에서는 Obsidian의 모든 문법을 완벽히 지원하지 않아도 된�
 - `.obsidian` 폴더 표시 여부
 - 자동 저장 여부
 - 검색 인덱스 재생성
-- 계정 비밀번호 변경
 
 ---
-
